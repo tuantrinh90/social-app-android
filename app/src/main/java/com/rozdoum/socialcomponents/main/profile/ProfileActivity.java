@@ -70,7 +70,8 @@ import com.rozdoum.socialcomponents.utils.LogUtil;
 import com.rozdoum.socialcomponents.utils.LogoutHelper;
 import com.rozdoum.socialcomponents.views.FollowButton;
 
-public class ProfileActivity extends BaseActivity<ProfileView, ProfilePresenter> implements ProfileView, GoogleApiClient.OnConnectionFailedListener, UnfollowConfirmationDialog.Callback {
+public class ProfileActivity extends BaseActivity<ProfileView, ProfilePresenter> implements ProfileView,
+        GoogleApiClient.OnConnectionFailedListener, UnfollowConfirmationDialog.Callback, View.OnClickListener {
     private static final String TAG = ProfileActivity.class.getSimpleName();
     public static final int CREATE_POST_FROM_PROFILE_REQUEST = 22;
     public static final String USER_ID_EXTRA_KEY = "ProfileActivity.USER_ID_EXTRA_KEY";
@@ -93,7 +94,8 @@ public class ProfileActivity extends BaseActivity<ProfileView, ProfilePresenter>
     private TextView likesCountersTextView;
     private TextView followersCounterTextView;
     private TextView followingsCounterTextView;
-    private FollowButton followButton;
+    private TextView txtSignOut;
+    //private FollowButton followButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,16 +121,18 @@ public class ProfileActivity extends BaseActivity<ProfileView, ProfilePresenter>
         progressBar = findViewById(R.id.progressBar);
         imageView = findViewById(R.id.imageView);
         nameEditText = findViewById(R.id.nameEditText);
+        txtSignOut = findViewById(R.id.txtSignOut);
         postsCounterTextView = findViewById(R.id.postsCounterTextView);
         likesCountersTextView = findViewById(R.id.likesCountersTextView);
         followersCounterTextView = findViewById(R.id.followersCounterTextView);
         followingsCounterTextView = findViewById(R.id.followingsCounterTextView);
         postsProgressBar = findViewById(R.id.postsProgressBar);
-        followButton = findViewById(R.id.followButton);
+        //followButton = findViewById(R.id.followButton);
         swipeContainer = findViewById(R.id.swipeContainer);
 
         initListeners();
 
+        txtSignOut.setOnClickListener(this);
         presenter.checkFollowState(userID);
 
         loadPostsList();
@@ -192,18 +196,15 @@ public class ProfileActivity extends BaseActivity<ProfileView, ProfilePresenter>
     }
 
     private void initListeners() {
-        followButton.setOnClickListener(v -> {
-            presenter.onFollowButtonClick(followButton.getState(), userID);
-        });
-
+//        followButton.setOnClickListener(v -> {
+//            presenter.onFollowButtonClick(followButton.getState(), userID);
+//        });
         followingsCounterTextView.setOnClickListener(v -> {
             startUsersListActivity(UsersListType.FOLLOWINGS);
         });
-
         followersCounterTextView.setOnClickListener(v -> {
             startUsersListActivity(UsersListType.FOLLOWERS);
         });
-
         swipeContainer.setOnRefreshListener(this::onRefreshAction);
     }
 
@@ -220,7 +221,6 @@ public class ProfileActivity extends BaseActivity<ProfileView, ProfilePresenter>
 
     private void loadPostsList() {
         if (recyclerView == null) {
-
             recyclerView = findViewById(R.id.recycler_view);
             postsAdapter = new PostsByUserAdapter(this, userID);
             postsAdapter.setCallBack(new PostsByUserAdapter.CallBack() {
@@ -409,33 +409,42 @@ public class ProfileActivity extends BaseActivity<ProfileView, ProfilePresenter>
         presenter.unfollowUser(userID);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        if (userID.equals(currentUserId)) {
-            MenuInflater inflater = getMenuInflater();
-            inflater.inflate(R.menu.profile_menu, menu);
-            return true;
-        }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        if (userID.equals(currentUserId)) {
+//            MenuInflater inflater = getMenuInflater();
+//            inflater.inflate(R.menu.profile_menu, menu);
+//            return true;
+//        }
+//
+//        return super.onCreateOptionsMenu(menu);
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle item selection
+//        switch (item.getItemId()) {
+//            case R.id.editProfile:
+//                presenter.onEditProfileClick();
+//                return true;
+//            case R.id.signOut:
+//                LogoutHelper.signOut(mGoogleApiClient, this);
+//                if (LoginManager.getInstance() != null) LoginManager.getInstance().logOut();
+//                startMainActivity();
+//                return true;
+//            case R.id.createPost:
+//                presenter.onCreatePostClick();
+//            default:
+//                return super.onOptionsItemSelected(item);
+//        }
+//    }
 
-        return super.onCreateOptionsMenu(menu);
-    }
-
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-        switch (item.getItemId()) {
-            case R.id.editProfile:
-                presenter.onEditProfileClick();
-                return true;
-            case R.id.signOut:
-                LogoutHelper.signOut(mGoogleApiClient, this);
-                if (LoginManager.getInstance() != null) LoginManager.getInstance().logOut();
-                startMainActivity();
-                return true;
-            case R.id.createPost:
-                presenter.onCreatePostClick();
-            default:
-                return super.onOptionsItemSelected(item);
+    public void onClick(View v) {
+        if (v.getId() == R.id.txtSignOut) {
+            LogoutHelper.signOut(mGoogleApiClient, this);
+            if (LoginManager.getInstance() != null) LoginManager.getInstance().logOut();
+            startMainActivity();
         }
     }
 }

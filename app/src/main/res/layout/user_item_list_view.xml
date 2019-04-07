@@ -24,15 +24,16 @@
         android:id="@+id/nameTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/intrinsic_padding"
         android:layout_marginStart="@dimen/intrinsic_padding"
+        android:layout_marginEnd="@dimen/intrinsic_padding"
         android:layout_weight="1"
         android:textAppearance="@style/TextAppearance.Title"
         tools:text="John Smith " />
 
     <com.rozdoum.socialcomponents.views.FollowButton
         android:id="@+id/followButton"
-        style="@style/FollowButton"
+        android:layout_width="@dimen/follow_button_width"
+        android:layout_height="@dimen/follow_button_width"
         android:visibility="invisible"
         tools:text="Follow back" />
 

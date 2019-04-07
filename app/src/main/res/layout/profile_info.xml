@@ -73,19 +73,25 @@
         tools:text="25 \n posts"
         tools:visibility="visible" />
 
-    <com.rozdoum.socialcomponents.views.FollowButton
-        android:id="@+id/followButton"
-        style="@style/FollowButton"
+    <TextView
+        android:id="@+id/txtSignOut"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
-        android:visibility="gone"
+        android:background="@null"
+        android:gravity="center"
+        android:text="@string/sign_out_menu_label"
+        android:textAllCaps="false"
+        android:textColor="@color/color_black"
+        android:textSize="@dimen/txt_title_large"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageContainer"
         app:layout_constraintVertical_bias="0.0"
-        app:layout_constraintVertical_chainStyle="spread_inside"
-        tools:text="Follow back" />
+        app:layout_constraintVertical_chainStyle="spread_inside" />
 
     <TextView
         android:id="@+id/nameEditText"
