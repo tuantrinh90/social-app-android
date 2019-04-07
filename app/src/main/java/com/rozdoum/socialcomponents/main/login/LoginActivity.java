@@ -20,7 +20,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
+import com.facebook.FacebookAuthorizationException;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
@@ -111,9 +113,12 @@ public class LoginActivity extends BaseActivity<LoginView, LoginPresenter> imple
             }
 
             @Override
-            public void onError(FacebookException error) {
-                LogUtil.logError(TAG, "facebook:onError", error);
-                showSnackBar(error.getMessage());
+            public void onError(FacebookException e) {
+                LogUtil.logError(TAG, "facebook:onError", e);
+                showSnackBar(e.getMessage());
+                if (e instanceof FacebookAuthorizationException) {
+                    if (LoginManager.getInstance() != null) LoginManager.getInstance().logOut();
+                }
             }
         });
 
@@ -208,7 +213,7 @@ public class LoginActivity extends BaseActivity<LoginView, LoginPresenter> imple
 
     @Override
     public void signInWithFacebook() {
-        LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("email", "public_profile"));
+        LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("public_profile", "email"));
     }
 }
 

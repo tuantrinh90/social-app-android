@@ -43,6 +43,7 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
@@ -279,9 +280,10 @@ public class ProfileActivity extends BaseActivity<ProfileView, ProfilePresenter>
     }
 
     private void startMainActivity() {
-        Intent intent = new Intent(ProfileActivity.this, MainActivity.class);
+        Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+        finish();
     }
 
     @Override
@@ -380,21 +382,21 @@ public class ProfileActivity extends BaseActivity<ProfileView, ProfilePresenter>
 
     @Override
     public void updateFollowButtonState(FollowState followState) {
-        followButton.setState(followState);
+        //followButton.setState(followState);
     }
 
     @Override
     public void updateFollowersCount(int count) {
-        followersCounterTextView.setVisibility(View.VISIBLE);
-        String followersLabel = getResources().getQuantityString(R.plurals.followers_counter_format, count, count);
-        followersCounterTextView.setText(presenter.buildCounterSpannable(followersLabel, count));
+//        followersCounterTextView.setVisibility(View.VISIBLE);
+//        String followersLabel = getResources().getQuantityString(R.plurals.followers_counter_format, count, count);
+//        followersCounterTextView.setText(presenter.buildCounterSpannable(followersLabel, count));
     }
 
     @Override
     public void updateFollowingsCount(int count) {
-        followingsCounterTextView.setVisibility(View.VISIBLE);
-        String followingsLabel = getResources().getQuantityString(R.plurals.followings_counter_format, count, count);
-        followingsCounterTextView.setText(presenter.buildCounterSpannable(followingsLabel, count));
+//        followingsCounterTextView.setVisibility(View.VISIBLE);
+//        String followingsLabel = getResources().getQuantityString(R.plurals.followings_counter_format, count, count);
+//        followingsCounterTextView.setText(presenter.buildCounterSpannable(followingsLabel, count));
     }
 
     @Override
@@ -427,6 +429,7 @@ public class ProfileActivity extends BaseActivity<ProfileView, ProfilePresenter>
                 return true;
             case R.id.signOut:
                 LogoutHelper.signOut(mGoogleApiClient, this);
+                if (LoginManager.getInstance() != null) LoginManager.getInstance().logOut();
                 startMainActivity();
                 return true;
             case R.id.createPost:

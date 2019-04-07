@@ -45,6 +45,7 @@ import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -90,7 +91,7 @@ public class PostDetailsActivity extends BaseActivity<PostDetailsView, PostDetai
     private TextView commentsLabel;
     private TextView likeCounterTextView;
     private TextView commentsCountTextView;
-    private TextView watcherCounterTextView;
+    //private TextView watcherCounterTextView;
     private TextView authorTextView;
     private TextView dateTextView;
     private ImageView authorImageView;
@@ -118,6 +119,7 @@ public class PostDetailsActivity extends BaseActivity<PostDetailsView, PostDetai
     private ActionMode mActionMode;
     private boolean isEnterTransitionFinished = false;
     private Button sendButton;
+    private LinearLayout shareContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,11 +150,13 @@ public class PostDetailsActivity extends BaseActivity<PostDetailsView, PostDetai
         authorTextView = findViewById(R.id.authorTextView);
         likeCounterTextView = findViewById(R.id.likeCounterTextView);
         commentsCountTextView = findViewById(R.id.commentsCountTextView);
-        watcherCounterTextView = findViewById(R.id.watcherCounterTextView);
+        //watcherCounterTextView = findViewById(R.id.watcherCounterTextView);
         dateTextView = findViewById(R.id.dateTextView);
         commentsProgressBar = findViewById(R.id.commentsProgressBar);
         warningCommentsTextView = findViewById(R.id.warningCommentsTextView);
         sendButton = findViewById(R.id.sendButton);
+        shareContainer = findViewById(R.id.shareContainer);
+
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && isAuthorAnimationRequired) {
             authorImageView.setScaleX(0);
@@ -410,12 +414,10 @@ public class PostDetailsActivity extends BaseActivity<PostDetailsView, PostDetai
         commentsLabel.setText(String.format(getString(R.string.label_comments), commentsCount));
         likeCounterTextView.setText(String.valueOf(post.getLikesCount()));
         likeController.setUpdatingLikeCounter(false);
-
-        watcherCounterTextView.setText(String.valueOf(post.getWatchersCount()));
-
+        //watcherCounterTextView.setText(String.valueOf(post.getWatchersCount()));
         CharSequence date = FormatterUtil.getRelativeTimeSpanStringShort(this, post.getCreatedDate());
         dateTextView.setText(date);
-
+        shareContainer.setOnClickListener(v -> Utils.share(getApplicationContext(), post.getImagePath()));
         presenter.updateCommentsVisibility(commentsCount);
     }
 

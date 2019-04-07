@@ -54,6 +54,9 @@
     <dimen name="follow_button_radius">16dp</dimen>
     <dimen name="follow_button_width">100dp</dimen>
     <dimen name="follow_button_height">32dp</dimen>
+    <dimen name="txt_title_small">14sp</dimen>
+    <dimen name="txt_title_medium">16sp</dimen>
+    <dimen name="txt_title_large">18sp</dimen>
 
 
     <dimen name="tab_indicator_height">4dp</dimen>

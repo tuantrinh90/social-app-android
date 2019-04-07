@@ -45,7 +45,6 @@ import android.widget.TextView;
 import com.rozdoum.socialcomponents.R;
 import com.rozdoum.socialcomponents.adapters.PostsAdapter;
 import com.rozdoum.socialcomponents.main.base.BaseActivity;
-import com.rozdoum.socialcomponents.main.followPosts.FollowingPostsActivity;
 import com.rozdoum.socialcomponents.main.post.createPost.CreatePostActivity;
 import com.rozdoum.socialcomponents.main.postDetails.PostDetailsActivity;
 import com.rozdoum.socialcomponents.main.profile.ProfileActivity;
@@ -312,11 +311,6 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
         switch (item.getItemId()) {
             case R.id.profile:
                 presenter.onProfileMenuActionClicked();
-                return true;
-
-            case R.id.followingPosts:
-                Intent followingPosts = new Intent(this, FollowingPostsActivity.class);
-                startActivity(followingPosts);
                 return true;
 
             case R.id.search:

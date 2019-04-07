@@ -18,10 +18,13 @@
 package com.rozdoum.socialcomponents.adapters.holders;
 
 import android.content.Context;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -57,7 +60,7 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
     private TextView likeCounterTextView;
     private ImageView likesImageView;
     private TextView commentsCountTextView;
-    private TextView watcherCounterTextView;
+    //private TextView watcherCounterTextView;
     private TextView dateTextView;
     private ImageView authorImageView;
     private ViewGroup likeViewGroup;
@@ -67,6 +70,7 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
 
     private LikeController likeController;
     private BaseActivity baseActivity;
+    private LinearLayout shareContainer;
 
     public PostViewHolder(View view, final OnClickListener onClickListener, BaseActivity activity) {
         this(view, onClickListener, activity, true);
@@ -81,12 +85,12 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         likeCounterTextView = view.findViewById(R.id.likeCounterTextView);
         likesImageView = view.findViewById(R.id.likesImageView);
         commentsCountTextView = view.findViewById(R.id.commentsCountTextView);
-        watcherCounterTextView = view.findViewById(R.id.watcherCounterTextView);
         dateTextView = view.findViewById(R.id.dateTextView);
         titleTextView = view.findViewById(R.id.titleTextView);
         detailsTextView = view.findViewById(R.id.detailsTextView);
         authorImageView = view.findViewById(R.id.authorImageView);
         likeViewGroup = view.findViewById(R.id.likesContainer);
+        shareContainer = view.findViewById(R.id.shareContainer);
 
         authorImageView.setVisibility(isAuthorNeeded ? View.VISIBLE : View.GONE);
 
@@ -125,7 +129,6 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         detailsTextView.setText(description);
         likeCounterTextView.setText(String.valueOf(post.getLikesCount()));
         commentsCountTextView.setText(String.valueOf(post.getCommentsCount()));
-        watcherCounterTextView.setText(String.valueOf(post.getWatchersCount()));
 
         CharSequence date = FormatterUtil.getRelativeTimeSpanStringShort(context, post.getCreatedDate());
         dateTextView.setText(date);
@@ -137,9 +140,14 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         // Displayed and saved to cache image, as needs for post detail.
         ImageUtil.loadImageCenterCrop(GlideApp.with(baseActivity), imageUrl, postImageView, width, height);
 
+
         if (post.getAuthorId() != null) {
             profileManager.getProfileSingleValue(post.getAuthorId(), createProfileChangeListener(authorImageView));
         }
+
+        shareContainer.setOnClickListener(v -> {
+            Utils.share(context, imageUrl);
+        });
 
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         if (firebaseUser != null) {
@@ -155,6 +163,7 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
 
     private OnObjectChangedListener<Profile> createProfileChangeListener(final ImageView authorImageView) {
         return new OnObjectChangedListenerSimple<Profile>() {
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
             @Override
             public void onObjectChanged(Profile obj) {
                 if (obj.getPhotoUrl() != null) {

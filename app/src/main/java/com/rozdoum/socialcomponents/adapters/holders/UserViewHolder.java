@@ -95,20 +95,19 @@ public class UserViewHolder extends RecyclerView.ViewHolder {
 
     protected void fillInProfileFields(Profile profile) {
         nameTextView.setText(profile.getUsername());
-
         String currentUserId = FirebaseAuth.getInstance().getUid();
-        if (currentUserId != null) {
-            if (!currentUserId.equals(profile.getId())) {
-                FollowManager.getInstance(context).checkFollowState(currentUserId, profile.getId(), followState -> {
-                    followButton.setVisibility(View.VISIBLE);
-                    followButton.setState(followState);
-                });
-            } else {
-                followButton.setState(FollowState.MY_PROFILE);
-            }
-        } else {
-            followButton.setState(FollowState.NO_ONE_FOLLOW);
-        }
+//        if (currentUserId != null) {
+//            if (!currentUserId.equals(profile.getId())) {
+//                FollowManager.getInstance(context).checkFollowState(currentUserId, profile.getId(), followState -> {
+//                    followButton.setVisibility(View.VISIBLE);
+//                    followButton.setState(followState);
+//                });
+//            } else {
+//                followButton.setState(FollowState.MY_PROFILE);
+//            }
+//        } else {
+//            followButton.setState(FollowState.NO_ONE_FOLLOW);
+//        }
 
         if (profile.getPhotoUrl() != null) {
             ImageUtil.loadImage(GlideApp.with(activity), profile.getPhotoUrl(), photoImageView);

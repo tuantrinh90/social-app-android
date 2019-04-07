@@ -90,7 +90,7 @@ class LoginPresenter extends BasePresenter<LoginView> {
                 LogUtil.logDebug(TAG, "firebaseAuthWithGoogle:" + account.getId());
 
             } else {
-                LogUtil.logDebug(TAG, "SIGN_IN_GOOGLE failed :" + result);
+                LogUtil.logDebug(TAG, "SIGN_IN_GOOGLE failed :" + result.getStatus());
                 view.hideProgress();
             }
         });
